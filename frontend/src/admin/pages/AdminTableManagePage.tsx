@@ -26,12 +26,15 @@ export default function AdminTableManagePage() {
     setLoading(true);
     try {
       const token = localStorage.getItem("jwtToken");
-      const res = await fetch("http://localhost:5000/api/tables", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://angelic-renewal-production.up.railway.app/api/tables",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await res.json();
       setTables(data);
     } catch (err) {
@@ -46,7 +49,7 @@ export default function AdminTableManagePage() {
     const newStatus = table.status === "free" ? "occupied" : "free";
     try {
       const token = localStorage.getItem("jwtToken");
-      await fetch(`http://localhost:5000/api/tables/${table.id}`, {
+      await fetch(`https://angelic-renewal-production.up.railway.app/api/tables/${table.id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

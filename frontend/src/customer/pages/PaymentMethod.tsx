@@ -33,7 +33,7 @@ export default function PaymentPage() {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/orders/${order_id}`,
+        `https://angelic-renewal-production.up.railway.app/api/orders/${order_id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -72,7 +72,7 @@ export default function PaymentPage() {
       const interval = setInterval(async () => {
         try {
           const res = await axios.get(
-            `http://localhost:5000/api/orders/${order.id}`,
+            `https://angelic-renewal-production.up.railway.app/api/orders/${order.id}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           if (res.data.payment_status === "paid") {

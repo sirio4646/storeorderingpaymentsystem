@@ -34,7 +34,7 @@ export default function MenusPage() {
 
   const fetchMenus = () => {
     console.log("Fetching menus...");
-    fetch("http://localhost:5000/api/menus", {
+    fetch("https://angelic-renewal-production.up.railway.app/api/menus", {
       headers: getAuthHeaders(),
     })
       .then((res) => {
@@ -76,7 +76,7 @@ export default function MenusPage() {
       base_price: parseFloat(newMenu.base_price as string),
     };
 
-    fetch("http://localhost:5000/api/menus", {
+    fetch("https://angelic-renewal-production.up.railway.app/api/menus", {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify(menuToCreate),
@@ -98,7 +98,7 @@ export default function MenusPage() {
   };
 
   const saveEditedMenu = () => {
-    fetch(`http://localhost:5000/api/menus/${editingId}`, {
+    fetch(`https://angelic-renewal-production.up.railway.app/api/menus/${editingId}`, {
       method: "PATCH",
       headers: getAuthHeaders(),
       body: JSON.stringify(editedMenu),
@@ -115,7 +115,7 @@ export default function MenusPage() {
   };
 
   const deleteMenu = (id: number) => {
-    fetch(`http://localhost:5000/api/menus/${id}`, {
+    fetch(`https://angelic-renewal-production.up.railway.app/api/menus/${id}`, {
       method: "DELETE",
       headers: getAuthHeaders(),
     }).then(() => {

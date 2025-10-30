@@ -46,7 +46,7 @@ export default function OrdersPage() {
 
   const fetchOrders = () => {
     setLoading(true);
-    fetch("http://localhost:5000/api/orders", {
+    fetch("https://angelic-renewal-production.up.railway.app/api/orders", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ export default function OrdersPage() {
     if (status === "completed") {
       body.payment_status = "paid";
     }
-    fetch(`http://localhost:5000/api/orders/${id}`, {
+    fetch(`https://angelic-renewal-production.up.railway.app/api/orders/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
