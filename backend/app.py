@@ -27,7 +27,7 @@ if app.config['JWT_SECRET_KEY'] == DEFAULT_JWT_SECRET and os.getenv('JWT_SECRET_
 # -------------------------------------------------------------
 
 # Configure CORS (Cross-Origin Resource Sharing) for the Flask app.
-CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173"]}}, supports_credentials=True)
+CORS(app, resources={r"/api/*": {"origins": ["https://storeorderingpaymentsystem-8p5l.vercel.app"]}}, supports_credentials=True)
 
 
 def get_db_connection():
