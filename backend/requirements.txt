@@ -1,8 +1,8 @@
-Flask
+Flask>=2.0
 requests
 Flask-SQLAlchemy
 python-dotenv
-Flask-Cors
+flask-cors
 gunicorn
-PyMySQL # Add this line
-# Remove: mysql-connector-python
+mysql-connector-python>=8.1
+# If you prefer PyMySQL, replace mysql-connector-python with PyMySQL and update get_db_connection accordingly
