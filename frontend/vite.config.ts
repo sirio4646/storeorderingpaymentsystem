@@ -8,4 +8,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  build: {
+    // place Vite output at repository root `dist` so Vercel can find it
+    outDir: '../dist'
+  }
 })
