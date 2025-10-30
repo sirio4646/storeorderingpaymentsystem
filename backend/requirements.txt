@@ -7,3 +7,4 @@ gunicorn
 mysql-connector-python>=8.1
 # If you prefer PyMySQL, replace mysql-connector-python with PyMySQL and update get_db_connection accordingly
 Flask-Bcrypt>=1.0.1
+PyJWT>=2.7.0
