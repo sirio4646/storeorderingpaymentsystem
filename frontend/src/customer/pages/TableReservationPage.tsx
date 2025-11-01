@@ -21,7 +21,6 @@ export default function TableReservationPage({ userType = "ลูกค้า" }
   const [tables, setTables] = useState<Table[]>([]);
   const [selectedTable, setSelectedTable] = useState<number | null>(null);
   const [snackbar, setSnackbar] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const timeLabel = useMemo(() => formatDateTime(now), [now]);
@@ -37,7 +36,6 @@ export default function TableReservationPage({ userType = "ลูกค้า" }
   }, []);
 
   const fetchTables = async () => {
-    setLoading(true);
     try {
       const res = await fetch(`${API_BASE}tables`, {
         headers: { "Content-Type": "application/json" },
@@ -47,8 +45,6 @@ export default function TableReservationPage({ userType = "ลูกค้า" }
     } catch (err) {
       setSnackbar("ไม่สามารถโหลดข้อมูลโต๊ะได้");
       setTimeout(() => setSnackbar(null), 3000);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -89,28 +85,21 @@ export default function TableReservationPage({ userType = "ลูกค้า" }
         </div>
       </div>
 
+      {/* ตารางโต๊ะ scrollable */}
       <div className="flex-1 overflow-y-auto mt-4">
-        {loading ? (
-          <div className="py-12 text-center text-gray-500">
-            กำลังโหลดข้อมูลโต๊ะ...
-          </div>
-        ) : tables.length === 0 ? (
-          <div className="py-12 text-center text-gray-500">ไม่มีโต๊ะในระบบ</div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-4 auto-rows-fr">
-            {tables.map((table) => (
-              <TableCard
-                key={table.id}
-                table={table}
-                onToggle={() =>
-                  handleTableSelect(table.id, table.status !== "free")
-                }
-                isSelected={selectedTable === table.id}
-                userType={userType}
-              />
-            ))}
-          </div>
-        )}
+        <div className="grid grid-cols-5 gap-4 pb-4 auto-rows-fr">
+          {tables.map((table) => (
+            <TableCard
+              key={table.id}
+              table={table}
+              onToggle={() =>
+                handleTableSelect(table.id, table.status !== "free")
+              }
+              isSelected={selectedTable === table.id}
+              userType={userType}
+            />
+          ))}
+        </div>
       </div>
 
       {/* ปุ่มยืนยัน */}

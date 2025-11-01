@@ -109,14 +109,6 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
     addToCart(menu);
   };
 
-  // accessibility: allow keyboard Add-to-cart via Enter/Space on cards
-  const handleCardKeyDown = (e: React.KeyboardEvent, menu: MenuItem) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      addToCart(menu);
-    }
-  };
-
   const addToCart = (menuItem: MenuItem) => {
     const existingItem = cart.find((item) => item.menu_id === menuItem.id);
 
@@ -158,7 +150,7 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
         {/* ปุ่มย้อนกลับ */}
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 px-4 py-2 bg-[#FFB566] text-gray-100 font-semibold rounded-xl hover:bg-[#FFA559] transition">
+          className="flex items-center gap-2 px-4 py-2 bg-[#FFB566] text-gray-100 font-semibold rounded-lg hover:bg-[#FFA559] transition">
           ← กลับ
         </button>
 
@@ -208,51 +200,23 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
             <div
               key={menu.id}
               onClick={() => handleCardClick(menu)}
-              onKeyDown={(e) => handleCardKeyDown(e, menu)}
-              tabIndex={0}
-              role="button"
-              aria-pressed={clickedMenuIds.includes(menu.id)}
-              className={`w-[150px] h-[220px] rounded-xl shadow-sm hover:shadow-md transition-transform transform relative flex-shrink-0 flex flex-col bg-white border ${
+              className={`w-[150px] h-[200px] bg-[#FFA559] rounded-lg shadow-md hover:shadow-lg transition-transform transform relative flex-shrink-0 flex flex-col ${
                 clickedMenuIds.includes(menu.id)
-                  ? "scale-105 border-[#FFDFBF]"
+                  ? "scale-105"
                   : "hover:scale-105"
               }`}>
-              <div className="relative h-28 w-full overflow-hidden rounded-t-xl">
-                <img
-                  src={menu.image_url || "https://via.placeholder.com/400x300"}
-                  alt={menu.name}
-                  className="w-full h-full object-cover"
-                  draggable={false}
-                />
-                <button
-                  aria-label={`เพิ่ม ${menu.name}`}
-                  className="absolute right-2 bottom-2 bg-gradient-to-r from-[#FF7A00] to-[#FF3D00] text-white rounded-full p-2 shadow-lg hover:opacity-95 transition"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToCart(menu);
-                  }}>
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M12 5v14M5 12h14"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-
+              <img
+                src={menu.image_url || "https://via.placeholder.com/400x300"}
+                alt={menu.name}
+                className="w-full h-25 object-cover rounded-t-lg"
+                draggable={false}
+              />
               <div className="p-2 flex-1 flex flex-col">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">
+                  <h3 className="text-sm font-bold text-[#000000] line-clamp-1">
                     {menu.name}
                   </h3>
-                  <p className="text-gray-600 text-xs font-medium line-clamp-2">
+                  <p className="text-[#000000] text-xs font-medium line-clamp-2">
                     {menu.description}
                   </p>
                 </div>
@@ -265,8 +229,8 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
               </div>
 
               {clickedMenuIds.includes(menu.id) && (
-                <div className="absolute top-2 right-2 bg-[#FF6500] text-white px-2 py-0.5 rounded animate-pulse text-xs">
-                  เพิ่มแล้ว
+                <div className="absolute top-1 right-1 bg-[#FF6500] text-gray-900 px-1 py-0.5 rounded animate-pulse text-xs">
+                  เพิ่มแล้ว!
                 </div>
               )}
             </div>

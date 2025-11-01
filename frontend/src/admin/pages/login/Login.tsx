@@ -3,7 +3,6 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_BASE } from "../../../utils/apiBase";
 import { useAuthStore } from "../../../store/authStore";
 
 export default function LoginPage() {

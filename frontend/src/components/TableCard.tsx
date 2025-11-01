@@ -11,7 +11,6 @@ interface Props {
 export default function TableCard({
   table,
   onToggle,
-  userType,
   isSelected = false,
 }: Props) {
   const isFree = table.status === "free";

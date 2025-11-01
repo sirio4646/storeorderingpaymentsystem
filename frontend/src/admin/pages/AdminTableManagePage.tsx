@@ -4,31 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { API_BASE } from "../../utils/apiBase";
 import { useAuthStore } from "../../store/authStore";
 
-// Small inline spinner component so we don't need extra deps
-function Spinner({ size = 20 }: { size?: number }) {
-  return (
-    <svg
-      className="animate-spin text-white"
-      style={{ width: size, height: size }}
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      aria-hidden="true">
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"></circle>
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-    </svg>
-  );
-}
-
 interface Table {
   id: number;
   table_number: number;
@@ -39,7 +14,6 @@ interface Table {
 export default function AdminTableManagePage() {
   const [tables, setTables] = useState<Table[]>([]);
   const [loading, setLoading] = useState(false);
-  const [actionInProgress, setActionInProgress] = useState<number | null>(null);
 
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
@@ -71,7 +45,6 @@ export default function AdminTableManagePage() {
   // เปลี่ยนสถานะโต๊ะ
   const handleToggleTableStatus = async (table: Table) => {
     const newStatus = table.status === "free" ? "occupied" : "free";
-    setActionInProgress(table.id);
     try {
       const token = localStorage.getItem("jwtToken");
       await fetch(`${API_BASE}tables/${table.id}`, {
@@ -82,12 +55,9 @@ export default function AdminTableManagePage() {
         },
         body: JSON.stringify({ status: newStatus }),
       });
-      await fetchTables();
+      fetchTables();
     } catch (err) {
       console.error("เปลี่ยนสถานะโต๊ะไม่สำเร็จ:", err);
-      alert("เกิดข้อผิดพลาดขณะเปลี่ยนสถานะโต๊ะ");
-    } finally {
-      setActionInProgress(null);
     }
   };
 
@@ -100,118 +70,77 @@ export default function AdminTableManagePage() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto font-sans min-h-screen bg-gray-50">
-      <header className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-extrabold text-gray-900">
-            จัดการสถานะโต๊ะ
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            ดูและปรับสถานะโต๊ะของร้านคุณแบบเรียลไทม์
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
+    <div className="p-6 font-sans min-h-screen bg-gray-50">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-800">จัดการสถานะโต๊ะ</h1>
+        <div className="flex gap-2">
           <button
             onClick={handleLogout}
-            className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-xl shadow hover:bg-red-700 transition"
-            aria-label="Logout">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 16l4-4m0 0l-4-4m4 4H7"
-              />
-            </svg>
+            className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 transition">
             Logout
           </button>
         </div>
-      </header>
+      </div>
 
-      <main>
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y table-auto">
-              <thead className="bg-gray-100 sticky top-0">
-                <tr className="text-gray-600 text-sm uppercase text-left">
-                  <th className="py-3 px-4">หมายเลขโต๊ะ</th>
-                  <th className="py-3 px-4">สถานะ</th>
-                  <th className="py-3 px-4">จำนวนที่นั่ง</th>
-                  <th className="py-3 px-4 text-center">เปลี่ยนสถานะ</th>
+      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+        <table className="w-full table-auto">
+          <thead className="bg-gray-100">
+            <tr className="text-gray-600 text-sm uppercase text-left">
+              <th className="py-3 px-4">หมายเลขโต๊ะ</th>
+              <th className="py-3 px-4">สถานะ</th>
+              <th className="py-3 px-4">จำนวนที่นั่ง</th>
+              <th className="py-3 px-4 text-center">เปลี่ยนสถานะ</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-700 text-sm">
+            {loading ? (
+              <tr>
+                <td colSpan={4} className="py-6 text-center text-gray-500">
+                  กำลังโหลดข้อมูล...
+                </td>
+              </tr>
+            ) : tables.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="py-6 text-center text-gray-500">
+                  ไม่มีข้อมูลโต๊ะ
+                </td>
+              </tr>
+            ) : (
+              tables.map((table) => (
+                <tr key={table.id} className="border-b hover:bg-gray-50">
+                  <td className="py-3 px-4 text-center font-semibold text-lg">
+                    {table.table_number}
+                  </td>
+                  <td className="py-3 px-4 text-center">
+                    <span
+                      className={`px-3 py-1 rounded text-xs font-medium
+                        ${
+                          table.status === "free"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}>
+                      {table.status === "free" ? "ว่าง" : "ไม่ว่าง"}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4 text-center">{table.capacity}</td>
+                  <td className="py-3 px-4 text-center">
+                    <button
+                      className={`px-5 py-2 rounded-lg font-bold shadow transition w-28
+                        ${
+                          table.status === "free"
+                            ? "bg-red-500 hover:bg-red-600 text-white"
+                            : "bg-green-500 hover:bg-green-600 text-white"
+                        }`}
+                      onClick={() => handleToggleTableStatus(table)}>
+                      {table.status === "free" ? "ปิดโต๊ะ" : "เปิดโต๊ะ"}
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-
-              <tbody className="text-gray-700 text-sm divide-y">
-                {loading ? (
-                  <tr>
-                    <td colSpan={4} className="py-10 text-center text-gray-500">
-                      <div className="flex items-center justify-center gap-3">
-                        <Spinner size={24} />
-                        <span>กำลังโหลดข้อมูลโต๊ะ...</span>
-                      </div>
-                    </td>
-                  </tr>
-                ) : tables.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="py-10 text-center text-gray-500">
-                      ไม่มีข้อมูลโต๊ะ
-                    </td>
-                  </tr>
-                ) : (
-                  tables.map((table) => (
-                    <tr key={table.id} className="hover:bg-gray-50">
-                      <td className="py-4 px-4 text-center font-semibold text-lg">
-                        {table.table_number}
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium inline-block ${
-                            table.status === "free"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
-                          }`}>
-                          {table.status === "free" ? "ว่าง" : "ไม่ว่าง"}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        {table.capacity}
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <button
-                          className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-semibold shadow transition w-36 ${
-                            table.status === "free"
-                              ? "bg-red-500 hover:bg-red-600 text-white"
-                              : "bg-green-500 hover:bg-green-600 text-white"
-                          }`}
-                          onClick={() => handleToggleTableStatus(table)}
-                          disabled={actionInProgress !== null}
-                          aria-label={`Toggle table ${table.table_number}`}>
-                          {actionInProgress === table.id ? (
-                            <>
-                              <Spinner size={18} />
-                              <span>กำลังบันทึก...</span>
-                            </>
-                          ) : (
-                            <span>
-                              {table.status === "free" ? "ปิดโต๊ะ" : "เปิดโต๊ะ"}
-                            </span>
-                          )}
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </main>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
