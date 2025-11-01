@@ -36,7 +36,7 @@ export default function TableReservationPage({ userType = "ลูกค้า" }
 
   const fetchTables = async () => {
     try {
-      const res = await fetch("https://angelic-renewal-production.up.railway.app/api/tables", {
+      const res = await fetch("https://storeorderingpaymentsystem-production.up.railway.app/api/tables", {
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();

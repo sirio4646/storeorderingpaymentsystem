@@ -57,7 +57,7 @@ export default function CartPage({ cart, setCart }: Props) {
       };
 
       const response = await axios.post(
-        "https://angelic-renewal-production.up.railway.app/api/orders",
+        "https://storeorderingpaymentsystem-production.up.railway.app/api/orders",
         orderData,
         {
           headers: {

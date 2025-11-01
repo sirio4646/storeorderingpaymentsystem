@@ -12,7 +12,7 @@ export default function RegisterForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = await fetch(
-      "https://angelic-renewal-production.up.railway.app/api/auth/register",
+      "https://storeorderingpaymentsystem-production.up.railway.app/api/auth/register",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -50,7 +50,7 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
   const fetchMenus = async () => {
     try {
       const token = localStorage.getItem("jwtToken");
-      const response = await axios.get("https://angelic-renewal-production.up.railway.app/api/menus", {
+      const response = await axios.get("https://storeorderingpaymentsystem-production.up.railway.app/api/menus", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const menuData: MenuItem[] = response.data;

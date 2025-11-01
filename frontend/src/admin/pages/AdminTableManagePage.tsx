@@ -27,7 +27,7 @@ export default function AdminTableManagePage() {
     try {
       const token = localStorage.getItem("jwtToken");
       const res = await fetch(
-        "https://angelic-renewal-production.up.railway.app/api/tables",
+        "https://storeorderingpaymentsystem-production.up.railway.app/api/tables",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ export default function AdminTableManagePage() {
     const newStatus = table.status === "free" ? "occupied" : "free";
     try {
       const token = localStorage.getItem("jwtToken");
-      await fetch(`https://angelic-renewal-production.up.railway.app/api/tables/${table.id}`, {
+      await fetch(`https://storeorderingpaymentsystem-production.up.railway.app/api/tables/${table.id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

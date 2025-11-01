@@ -33,7 +33,7 @@ export default function EmployeesPage() {
 
   // --- Fetch employees ---
   const fetchEmployees = () => {
-    fetch("https://angelic-renewal-production.up.railway.app/api/employees", {
+    fetch("https://storeorderingpaymentsystem-production.up.railway.app/api/employees", {
       headers: { Authorization: `Bearer ${jwtToken}` },
     })
       .then((res) => res.json())
@@ -60,7 +60,7 @@ export default function EmployeesPage() {
     setValidationMessage(null);
     const currentISODate = new Date().toISOString().split("T")[0];
 
-    fetch("https://angelic-renewal-production.up.railway.app/api/employees", {
+    fetch("https://storeorderingpaymentsystem-production.up.railway.app/api/employees", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export default function EmployeesPage() {
   };
 
   const saveEditedEmployee = () => {
-    fetch(`https://angelic-renewal-production.up.railway.app/api/employees/${editingId}`, {
+    fetch(`https://storeorderingpaymentsystem-production.up.railway.app/api/employees/${editingId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +102,7 @@ export default function EmployeesPage() {
 
   // --- Delete Employee ---
   const deleteEmployee = (id: number) => {
-    fetch(`https://angelic-renewal-production.up.railway.app/api/employees/${id}`, {
+    fetch(`https://storeorderingpaymentsystem-production.up.railway.app/api/employees/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${jwtToken}` },
     }).then(() => fetchEmployees());

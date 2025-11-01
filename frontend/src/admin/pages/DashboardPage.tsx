@@ -55,7 +55,7 @@ export default function DashboardPage() {
         return;
       }
 
-      const res = await axios.get(`https://angelic-renewal-production.up.railway.app/api/admin/dashboard`, {
+      const res = await axios.get(`https://storeorderingpaymentsystem-production.up.railway.app/api/admin/dashboard`, {
         headers: {
           Authorization: `Bearer ${token}`, // ✅ ส่ง token ให้ backend
         },

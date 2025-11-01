@@ -24,7 +24,7 @@ export default function LoginPage() {
     try {
       // --- ส่ง username/password ดิบไป backend
       const response = await axios.post(
-        "https://angelic-renewal-production.up.railway.app/api/auth/login",
+        "https://storeorderingpaymentsystem-production.up.railway.app/api/auth/login",
         {
           username,
           password,
