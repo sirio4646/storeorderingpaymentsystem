@@ -35,7 +35,7 @@ export default function RegisterForm() {
     "
       style={{
         backgroundImage:
-          "url('https://thumbs.dreamstime.com/b/thai-food-background-dishes-cuisine-tom-yum-soup-pad-noodles-fried-rice-pork-vegetables-khao-phat-mu-85688529.jpg')",
+          "url('https://images.pexels.com/photos/1640773/pexels-photo-1640773.jpeg')",
       }}>
       <div className="w-full max-w-md bg-white shadow-xl rounded-3xl p-6">
         <h2 className="text-2xl font-bold mb-6 text-center text-[#FF6500]">
