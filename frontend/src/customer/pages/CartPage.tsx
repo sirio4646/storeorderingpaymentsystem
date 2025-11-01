@@ -87,7 +87,7 @@ export default function CartPage({ cart, setCart }: Props) {
       <div className="flex justify-between items-start mb-6">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 px-4 py-2 bg-white text-[#FF6500] rounded-lg hover:shadow-md transition border border-[#FFE6C7]">
+          className="flex items-center gap-2 px-4 py-2 bg-white text-[#FF6500] rounded-xl hover:shadow-md transition border border-[#FFE6C7]">
           <span className="text-lg">←</span>
           <span className="font-medium">ย้อนกลับ</span>
         </button>
@@ -136,7 +136,7 @@ export default function CartPage({ cart, setCart }: Props) {
                     <img
                       src={item.image_url || "https://via.placeholder.com/80"}
                       alt={item.name}
-                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0"
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover flex-shrink-0"
                     />
                     <div className="flex-1 flex flex-col gap-2">
                       <h4 className="font-semibold text-base sm:text-lg text-gray-800">
@@ -168,7 +168,7 @@ export default function CartPage({ cart, setCart }: Props) {
                           item.notes
                         )
                       }
-                      className="px-3 py-2 rounded-md bg-[#FFF6EB] hover:bg-[#FFE6C7] active:scale-95 transition-transform text-lg font-bold border border-[#FFE6C7]">
+                      className="px-3 py-2 rounded-xl bg-[#FFF6EB] hover:bg-[#FFE6C7] active:scale-95 transition-transform text-lg font-bold border border-[#FFE6C7]">
                       -
                     </button>
                     <input
@@ -182,13 +182,13 @@ export default function CartPage({ cart, setCart }: Props) {
                           item.notes
                         )
                       }
-                      className="w-12 text-center px-1 py-2 border border-gray-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FF6500] text-base"
+                      className="w-12 text-center px-1 py-2 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FF6500] text-base"
                     />
                     <button
                       onClick={() =>
                         updateItem(item.menu_id, item.quantity + 1, item.notes)
                       }
-                      className="px-3 py-2 rounded-md bg-[#FFF6EB] hover:bg-[#FFE6C7] active:scale-95 transition-transform text-lg font-bold border border-[#FFE6C7]">
+                      className="px-3 py-2 rounded-xl bg-[#FFF6EB] hover:bg-[#FFE6C7] active:scale-95 transition-transform text-lg font-bold border border-[#FFE6C7]">
                       +
                     </button>
                   </div>
@@ -200,7 +200,7 @@ export default function CartPage({ cart, setCart }: Props) {
                     </span>
                     <button
                       onClick={() => removeFromCart(item.menu_id)}
-                      className="px-4 py-2 bg-white text-[#FF6500] rounded-lg border border-[#FFB566] hover:shadow-sm transition text-sm sm:text-base">
+                      className="px-4 py-2 bg-white text-[#FF6500] rounded-xl border border-[#FFB566] hover:shadow-sm transition text-sm sm:text-base">
                       ลบ
                     </button>
                   </div>

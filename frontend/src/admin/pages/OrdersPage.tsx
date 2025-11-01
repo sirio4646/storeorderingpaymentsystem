@@ -118,7 +118,7 @@ export default function OrdersPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={handleLogout}
-            className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition"
+            className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-xl shadow hover:bg-red-700 transition"
             aria-label="Logout">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -212,7 +212,7 @@ export default function OrdersPage() {
                   <button
                     onClick={() => handleViewItems(order)}
                     disabled={actionInProgress !== null}
-                    className="inline-flex items-center gap-2 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
+                    className="inline-flex items-center gap-2 bg-blue-600 text-white px-3 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
                     <svg
                       className="h-4 w-4"
                       viewBox="0 0 24 24"
@@ -243,13 +243,13 @@ export default function OrdersPage() {
                       <button
                         onClick={() => handleActionClick(order, "completed")}
                         disabled={actionInProgress !== null}
-                        className="bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition">
+                        className="bg-green-600 text-white px-3 py-2 rounded-xl text-sm font-semibold hover:bg-green-700 transition">
                         เสร็จสิ้น
                       </button>
                       <button
                         onClick={() => handleActionClick(order, "cancelled")}
                         disabled={actionInProgress !== null}
-                        className="bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
+                        className="bg-red-600 text-white px-3 py-2 rounded-xl text-sm font-semibold hover:bg-red-700 transition">
                         ยกเลิก
                       </button>
                     </>
@@ -279,12 +279,12 @@ export default function OrdersPage() {
             </p>
             <div className="flex justify-end space-x-3">
               <button
-                className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800"
+                className="px-4 py-2 rounded-xl bg-gray-300 hover:bg-gray-400 text-gray-800"
                 onClick={handleCancelAction}>
                 ยกเลิก
               </button>
               <button
-                className={`px-4 py-2 rounded-lg text-white ${
+                className={`px-4 py-2 rounded-xl text-white ${
                   actionToConfirm === "completed"
                     ? "bg-green-500 hover:bg-green-600"
                     : "bg-red-500 hover:bg-red-600"
@@ -319,8 +319,8 @@ export default function OrdersPage() {
               {selectedOrder.items.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-start border rounded-lg p-3 shadow-sm">
-                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-200 mr-4">
+                  className="flex items-start border rounded-xl p-3 shadow-sm">
+                  <div className="w-20 h-20 rounded-xl overflow-hidden bg-gray-200 mr-4">
                     {item.menu_image ? (
                       <img
                         src={item.menu_image}
@@ -350,7 +350,7 @@ export default function OrdersPage() {
               {selectedOrder.status === "pending" && (
                 <>
                   <button
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                    className="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-600"
                     onClick={() =>
                       handleActionClick(selectedOrder, "completed")
                     }>
@@ -358,7 +358,7 @@ export default function OrdersPage() {
                     เสร็จสิ้น
                   </button>
                   <button
-                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                    className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-600"
                     onClick={() =>
                       handleActionClick(selectedOrder, "cancelled")
                     }>
@@ -368,7 +368,7 @@ export default function OrdersPage() {
                 </>
               )}
               <button
-                className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
+                className="bg-gray-400 text-white px-4 py-2 rounded-xl hover:bg-gray-500"
                 onClick={handleCloseItemsModal}>
                 ปิด
               </button>

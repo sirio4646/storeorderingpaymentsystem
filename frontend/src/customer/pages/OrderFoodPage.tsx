@@ -158,7 +158,7 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
         {/* ปุ่มย้อนกลับ */}
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 px-4 py-2 bg-[#FFB566] text-gray-100 font-semibold rounded-lg hover:bg-[#FFA559] transition">
+          className="flex items-center gap-2 px-4 py-2 bg-[#FFB566] text-gray-100 font-semibold rounded-xl hover:bg-[#FFA559] transition">
           ← กลับ
         </button>
 
@@ -212,12 +212,12 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
               tabIndex={0}
               role="button"
               aria-pressed={clickedMenuIds.includes(menu.id)}
-              className={`w-[150px] h-[220px] rounded-lg shadow-sm hover:shadow-md transition-transform transform relative flex-shrink-0 flex flex-col bg-white border ${
+              className={`w-[150px] h-[220px] rounded-xl shadow-sm hover:shadow-md transition-transform transform relative flex-shrink-0 flex flex-col bg-white border ${
                 clickedMenuIds.includes(menu.id)
                   ? "scale-105 border-[#FFDFBF]"
                   : "hover:scale-105"
               }`}>
-              <div className="relative h-28 w-full overflow-hidden rounded-t-lg">
+              <div className="relative h-28 w-full overflow-hidden rounded-t-xl">
                 <img
                   src={menu.image_url || "https://via.placeholder.com/400x300"}
                   alt={menu.name}

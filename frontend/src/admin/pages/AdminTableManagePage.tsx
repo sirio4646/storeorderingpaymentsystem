@@ -114,7 +114,7 @@ export default function AdminTableManagePage() {
         <div className="flex items-center gap-3">
           <button
             onClick={handleLogout}
-            className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition"
+            className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-xl shadow hover:bg-red-700 transition"
             aria-label="Logout">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +184,7 @@ export default function AdminTableManagePage() {
                       </td>
                       <td className="py-4 px-4 text-center">
                         <button
-                          className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold shadow transition w-36 ${
+                          className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-semibold shadow transition w-36 ${
                             table.status === "free"
                               ? "bg-red-500 hover:bg-red-600 text-white"
                               : "bg-green-500 hover:bg-green-600 text-white"

@@ -112,7 +112,7 @@ export default function PaymentPage() {
       {/* ปุ่มย้อนกลับ */}
       <button
         onClick={() => navigate(-1)}
-        className="self-start mb-4 flex items-center gap-2 px-4 py-2 bg-[#FFB566] text-white rounded-lg hover:bg-[#FFA559] transition">
+        className="self-start mb-4 flex items-center gap-2 px-4 py-2 bg-[#FFB566] text-white rounded-xl hover:bg-[#FFA559] transition">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -146,7 +146,7 @@ export default function PaymentPage() {
         <div className="grid grid-cols-1 gap-6">
           {/* QR Code */}
           <div
-            className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all transform
+            className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all transform
         ${
           method === "qrcode"
             ? "border-[#FF6500] bg-[#FFF2E0] shadow-md scale-[1.02]"
@@ -173,7 +173,7 @@ export default function PaymentPage() {
 
           {/* Cash */}
           <div
-            className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all
+            className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all
         ${
           method === "cash"
             ? "border-[#FF6500] bg-[#FFF2E0] shadow-md scale-[1.02]"
@@ -192,7 +192,7 @@ export default function PaymentPage() {
               <img
                 src="https://static.vecteezy.com/system/resources/previews/040/137/950/non_2x/minimalist-money-logo-design-template-cash-money-for-business-finance-money-investing-logo-vector.jpg"
                 alt="Cash"
-                className="w-10 h-10 object-contain rounded-md"
+                className="w-10 h-10 object-contain rounded-xl"
               />
               <p className="text-lg font-medium text-gray-800">เงินสด</p>
             </div>
@@ -234,7 +234,7 @@ export default function PaymentPage() {
             <p className="text-gray-600 mb-2">
               Order ID: {order.id} | ยอดเงิน: ฿{totalAmountNumber.toFixed(2)}
             </p>
-            <div className="mx-auto mb-4 w-56 h-56 p-2 bg-gray-50 rounded-lg flex items-center justify-center">
+            <div className="mx-auto mb-4 w-56 h-56 p-2 bg-gray-50 rounded-xl flex items-center justify-center">
               <img
                 src={generatedQrCodeUrl}
                 alt="PromptPay QR"

@@ -167,7 +167,7 @@ export default function MenusPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow transition">
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl shadow transition">
             Logout
           </button>
         </div>
@@ -218,7 +218,7 @@ export default function MenusPage() {
         <button
           onClick={createMenu}
           disabled={creating}
-          className={`bg-blue-700 text-white px-5 py-2 rounded-lg shadow transition inline-flex items-center gap-2 ${
+          className={`bg-blue-700 text-white px-5 py-2 rounded-xl shadow transition inline-flex items-center gap-2 ${
             creating ? "opacity-80 cursor-wait" : "hover:bg-blue-800"
           }`}>
           {creating ? (
@@ -360,7 +360,7 @@ export default function MenusPage() {
                           <button
                             onClick={saveEditedMenu}
                             disabled={actionInProgress !== null}
-                            className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition w-20 inline-flex items-center justify-center gap-2">
+                            className="bg-green-500 text-white px-3 py-1 rounded-xl hover:bg-green-600 transition w-20 inline-flex items-center justify-center gap-2">
                             {actionInProgress === menu.id ? (
                               <svg
                                 className="animate-spin h-4 w-4"
@@ -384,7 +384,7 @@ export default function MenusPage() {
                           <button
                             onClick={cancelEdit}
                             disabled={actionInProgress !== null}
-                            className="bg-gray-400 text-white px-3 py-1 rounded-md hover:bg-gray-500 transition w-20">
+                            className="bg-gray-400 text-white px-3 py-1 rounded-xl hover:bg-gray-500 transition w-20">
                             ยกเลิก
                           </button>
                         </div>
@@ -393,13 +393,13 @@ export default function MenusPage() {
                           <button
                             onClick={() => handleEditClick(menu)}
                             disabled={actionInProgress !== null}
-                            className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-300 transition w-20">
+                            className="bg-yellow-500 text-white px-3 py-1 rounded-xl hover:bg-yellow-300 transition w-20">
                             แก้ไข
                           </button>
                           <button
                             onClick={() => setDeleteConfirmId(menu.id)}
                             disabled={actionInProgress !== null}
-                            className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition w-20">
+                            className="bg-red-500 text-white px-3 py-1 rounded-xl hover:bg-red-600 transition w-20">
                             ลบ
                           </button>
                         </div>
@@ -423,12 +423,12 @@ export default function MenusPage() {
             <p className="mb-4">คุณต้องการลบเมนูนี้จริงหรือไม่?</p>
             <div className="flex justify-end gap-2">
               <button
-                className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800"
+                className="px-4 py-2 rounded-xl bg-gray-300 hover:bg-gray-400 text-gray-800"
                 onClick={() => setDeleteConfirmId(null)}>
                 ยกเลิก
               </button>
               <button
-                className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white"
+                className="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white"
                 onClick={() => deleteMenu(deleteConfirmId)}>
                 ลบ
               </button>

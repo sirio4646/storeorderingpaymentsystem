@@ -60,7 +60,7 @@ export default function LoginPage() {
       className="flex items-center justify-center min-h-screen bg-cover bg-center font-sans text-gray-800"
       style={{
         backgroundImage:
-          "url('https://thumbs.dreamstime.com/b/thai-food-background-dishes-cuisine-tom-yum-soup-pad-noodles-fried-rice-pork-vegetables-khao-phat-mu-85688529.jpg')",
+          "url('https://unsplash.com/photos/pasta-on-blue-ceramic-plate-bFHovGT0_VM')",
       }}>
       <div className="w-full max-w-sm bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl p-6">
         <h2 className="text-2xl font-bold mb-6 text-center text-[#FF6500]">
