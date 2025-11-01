@@ -1,3 +1,4 @@
+//paymentMethod
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,6 +9,7 @@ interface Order {
   id: number;
   total_amount: string;
   payment_status: string;
+  promptpay_number: string;
 }
 
 export default function PaymentPage() {
@@ -58,7 +60,13 @@ export default function PaymentPage() {
     if (method === "cash") {
       handleCashPayment();
     } else if (method === "qrcode") {
-      const promptPayId = "0909634366"; // TODO: เปลี่ยนเป็น env
+      // ✅ ใช้หมายเลขจาก backend
+      const promptPayId = order.promptpay_number;
+      if (!promptPayId) {
+        alert("ร้านยังไม่ได้ระบุเบอร์ PromptPay");
+        return;
+      }
+
       const totalAmountNumber = parseFloat(order.total_amount);
       const url = `https://promptpay.io/${promptPayId}/${totalAmountNumber.toFixed(
         2
@@ -66,7 +74,7 @@ export default function PaymentPage() {
       setGeneratedQrCodeUrl(url);
       setShowQrPopup(true);
 
-      // Polling ตรวจสอบ payment_status ทุก 3 วินาที
+      // Polling ตรวจสอบ payment_status ทุก 5 วินาที
       const interval = setInterval(async () => {
         try {
           const res = await axios.get(`${API_BASE}orders/${order.id}`, {

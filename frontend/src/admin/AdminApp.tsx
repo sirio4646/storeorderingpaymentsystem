@@ -1,3 +1,4 @@
+//frontend\src\admin\AdminApp.tsx
 "use client";
 import { useState, useEffect } from "react";
 import {
@@ -7,6 +8,8 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
+import axios from "axios";
+import { API_BASE } from "../utils/apiBase";
 
 // Customer Pages
 import TableReservationPage from "../customer/pages/TableReservationPage";
@@ -39,6 +42,14 @@ interface CartItem {
 ────────────────────────────── */
 function Sidebar() {
   const location = useLocation();
+  const token = useAuthStore((state) => state.token);
+
+  const [restaurant, setRestaurant] = useState<{
+    name: string;
+    phone_number: string;
+  } | null>(null);
+  const [editing, setEditing] = useState(false);
+  const [phoneInput, setPhoneInput] = useState("");
 
   const links = [
     { name: "Dashboard", path: "/admin/dashboard" },
@@ -48,29 +59,102 @@ function Sidebar() {
     { name: "Table Management", path: "/admin/tables" },
   ];
 
-  return (
-    <aside className="w-64 bg-[#0B192C] text-gray-100 min-h-screen p-6 shadow-lg">
-      <h2 className="text-2xl font-extrabold mb-8 text-center text-[#FF6500] tracking-wide">
-        Admin Panel
-      </h2>
+  // ดึงข้อมูลร้าน
+  useEffect(() => {
+    const fetchRestaurant = async () => {
+      if (!token) return;
+      try {
+        const res = await axios.get(`${API_BASE}restaurants/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setRestaurant(res.data);
+        setPhoneInput(res.data.phone_number);
+      } catch (err) {
+        console.error("Failed to fetch restaurant:", err);
+      }
+    };
+    fetchRestaurant();
+  }, [token]);
 
-      <nav className="flex flex-col gap-2">
-        {links.map((link) => {
-          const isActive = location.pathname === link.path;
-          return (
-            <a
-              key={link.path}
-              href={link.path}
-              className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium ${
-                isActive
-                  ? "bg-[#FF6500] text-white shadow-md"
-                  : "text-gray-300 hover:bg-gray-800 hover:text-[#FF6500]"
-              }`}>
-              {link.name}
-            </a>
-          );
-        })}
-      </nav>
+  // บันทึกเบอร์โทร
+  const handleSavePhone = async () => {
+    if (!token) return;
+    try {
+      await axios.put(
+        `${API_BASE}restaurants/phone`,
+        { phone_number: phoneInput },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setRestaurant((prev) =>
+        prev ? { ...prev, phone_number: phoneInput } : null
+      );
+      setEditing(false);
+    } catch (err) {
+      console.error("Failed to update phone:", err);
+    }
+  };
+
+  return (
+    <aside className="w-64 bg-[#0B192C] text-gray-100 min-h-screen p-6 shadow-lg flex flex-col justify-between">
+      <div>
+        <h2 className="text-2xl font-extrabold mb-8 text-center text-[#FF6500] tracking-wide">
+          Admin Panel
+        </h2>
+
+        <nav className="flex flex-col gap-2">
+          {links.map((link) => {
+            const isActive = location.pathname === link.path;
+            return (
+              <a
+                key={link.path}
+                href={link.path}
+                className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium ${
+                  isActive
+                    ? "bg-[#FF6500] text-white shadow-md"
+                    : "text-gray-300 hover:bg-gray-800 hover:text-[#FF6500]"
+                }`}>
+                {link.name}
+              </a>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Footer: ร้าน + เบอร์โทร */}
+      {restaurant && (
+        <div className="mt-8 text-sm text-gray-300">
+          <p className="font-semibold">{restaurant.name}</p>
+          {editing ? (
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={phoneInput}
+                onChange={(e) => setPhoneInput(e.target.value)}
+                className="px-2 py-1 rounded bg-gray-700 text-white text-sm w-full"
+              />
+              <button
+                onClick={handleSavePhone}
+                className="px-2 py-1 bg-[#FF6500] rounded text-white text-sm">
+                บันทึก
+              </button>
+              <button
+                onClick={() => setEditing(false)}
+                className="px-2 py-1 bg-gray-500 rounded text-white text-sm">
+                ยกเลิก
+              </button>
+            </div>
+          ) : (
+            <div className="flex justify-between items-center">
+              <span>{restaurant.phone_number}</span>
+              <button
+                onClick={() => setEditing(true)}
+                className="text-xs text-[#FF6500] hover:underline">
+                แก้ไข
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </aside>
   );
 }
@@ -105,7 +189,6 @@ export default function App() {
   return (
     <Router>
       <div className="flex min-h-screen bg-gray-100">
-        {/* 🧭 Sidebar เฉพาะ Admin */}
         {!isCustomer && isLoggedIn && <Sidebar />}
 
         <main className="flex-1 overflow-y-auto">
