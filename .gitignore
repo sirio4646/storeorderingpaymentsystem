@@ -22,7 +22,3 @@ Thumbs.db
 
 # test result
 results/
-
-# Build outputs (ignore built frontend artifacts)
-/frontend/dist/
-/dist/
