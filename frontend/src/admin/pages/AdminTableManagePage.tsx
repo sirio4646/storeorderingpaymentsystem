@@ -100,7 +100,7 @@ export default function AdminTableManagePage() {
   };
 
   return (
-    <div className="p-6 font-sans min-h-screen bg-gray-50">
+    <div className="p-6 max-w-7xl mx-auto font-sans min-h-screen bg-gray-50">
       <header className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-extrabold text-gray-900">
@@ -116,7 +116,6 @@ export default function AdminTableManagePage() {
             onClick={handleLogout}
             className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition"
             aria-label="Logout">
-            {/* small logout icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"

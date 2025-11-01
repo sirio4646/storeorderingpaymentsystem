@@ -64,30 +64,7 @@ export default function MenusPage() {
     fetchMenus();
   }, []);
 
-  // Inline spinner used in buttons and small indicators
-  function Spinner({ size = 16 }: { size?: number }) {
-    return (
-      <svg
-        className="animate-spin"
-        style={{ width: size, height: size }}
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden>
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-          fill="none"></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-      </svg>
-    );
-  }
+  // (local spinner removed — use inline SVGs where needed)
 
   const handleLogout = () => {
     localStorage.removeItem("jwtToken");
@@ -175,10 +152,14 @@ export default function MenusPage() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">จัดการเมนู</h1>
+          <h1 className="text-3xl font-bold">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF7A00] to-[#FF3D00]">
+              จัดการเมนู
+            </span>
+          </h1>
           <p className="text-sm text-gray-500 mt-1">
             เพิ่ม แก้ไข และจัดการเมนูอาหารของร้าน
           </p>
@@ -186,7 +167,7 @@ export default function MenusPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow transition">
             Logout
           </button>
         </div>

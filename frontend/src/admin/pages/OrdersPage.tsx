@@ -102,27 +102,40 @@ export default function OrdersPage() {
   const handleCloseItemsModal = () => setSelectedOrder(null);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-extrabold text-gray-800"> Orders</h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded inline-flex items-center gap-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16l4-4m0 0l-4-4m4 4H7"
-            />
-          </svg>
-          Logout
-        </button>
+    <div className="p-6 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-4xl font-extrabold text-gray-900">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF7A00] to-[#FF3D00]">
+              Orders
+            </span>
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            ตรวจสอบและจัดการออเดอร์เรียลไทม์
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleLogout}
+            className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition"
+            aria-label="Logout">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 16l4-4m0 0l-4-4m4 4H7"
+              />
+            </svg>
+            Logout
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -150,75 +163,98 @@ export default function OrdersPage() {
           {orders.map((order) => (
             <div
               key={order.id}
-              className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-bold text-gray-800">
-                  Order #{order.id}
-                </h2>
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold
-                  ${
-                    order.status === "completed"
-                      ? "bg-green-100 text-green-700"
-                      : order.status === "cancelled"
-                      ? "bg-red-100 text-red-700"
-                      : "bg-yellow-100 text-yellow-700"
-                  }`}>
-                  {order.status}
-                </span>
+              className="bg-white rounded-2xl shadow-md p-5 border border-gray-100 hover:shadow-lg transition">
+              <div className="flex items-start justify-between mb-4 gap-3">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Order #{order.id}
+                  </h3>
+                  <div className="mt-1 text-sm text-gray-500">
+                    โต๊ะ{" "}
+                    <span className="font-medium text-gray-800">
+                      {order.table_number}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-end gap-2">
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      order.status === "completed"
+                        ? "bg-green-50 text-green-700"
+                        : order.status === "cancelled"
+                        ? "bg-red-50 text-red-700"
+                        : "bg-yellow-50 text-yellow-700"
+                    }`}>
+                    {order.status.toUpperCase()}
+                  </span>
+
+                  <span
+                    className={`text-sm font-semibold px-3 py-1 rounded ${
+                      order.payment_status === "paid"
+                        ? "bg-green-50 text-green-700"
+                        : "bg-red-50 text-red-700"
+                    }`}>
+                    {order.payment_status.toUpperCase()}
+                  </span>
+                </div>
               </div>
 
-              <p className="text-lg text-gray-600 mb-2">
-                โต๊ะ:{" "}
-                <span className="font-semibold text-xl">
-                  {order.table_number}
-                </span>
-              </p>
-              <p className="text-lg text-gray-600 mb-2">
-                ยอดรวม:{" "}
-                <span className="font-semibold text-xl">
+              <div className="mb-4">
+                <div className="text-sm text-gray-500">ยอดรวม</div>
+                <div className="text-2xl font-bold text-gray-900">
                   {order.total_amount} ฿
-                </span>
-              </p>
-              <p className="text-lg text-gray-600 mb-4">
-                การชำระเงิน:{" "}
-                <span
-                  className={`ml-2 px-3 py-2 rounded text-base font-semibold ${
-                    order.payment_status === "paid"
-                      ? "bg-green-200 text-green-700"
-                      : "bg-red-200 text-red-700"
-                  }`}>
-                  {order.payment_status}
-                </span>
-              </p>
+                </div>
+              </div>
 
-              <div className="flex justify-between items-center">
-                {order.status === "pending" && (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
                   <button
-                    className="bg-blue-700 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors text-lg font-semibold inline-flex items-center gap-2"
                     onClick={() => handleViewItems(order)}
-                    disabled={actionInProgress !== null}>
+                    disabled={actionInProgress !== null}
+                    className="inline-flex items-center gap-2 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
+                    <svg
+                      className="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                     ดูรายละเอียด
-                    {actionInProgress === order.id ? (
-                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                          fill="none"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                        />
-                      </svg>
-                    ) : null}
                   </button>
-                )}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {order.status === "pending" && (
+                    <>
+                      <button
+                        onClick={() => handleActionClick(order, "completed")}
+                        disabled={actionInProgress !== null}
+                        className="bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition">
+                        เสร็จสิ้น
+                      </button>
+                      <button
+                        onClick={() => handleActionClick(order, "cancelled")}
+                        disabled={actionInProgress !== null}
+                        className="bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">
+                        ยกเลิก
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           ))}

@@ -130,12 +130,14 @@ export default function PaymentPage() {
       </button>
 
       <div className="bg-white shadow-xl rounded-3xl p-8 w-full max-w-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center text-[#FF6500]">
-          ชำระเงิน
+        <h2 className="text-2xl font-bold mb-4 text-center">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF7A00] to-[#FF3D00]">
+            ชำระเงิน
+          </span>
         </h2>
 
-        <div className="mb-8 text-center">
-          <p className="text-lg font-medium">ยอดชำระทั้งหมด</p>
+        <div className="mb-6 text-center">
+          <p className="text-sm text-gray-500">ยอดชำระทั้งหมด</p>
           <p className="text-3xl font-extrabold text-[#FF6500] mt-2">
             ฿{totalAmountNumber.toFixed(2)}
           </p>
@@ -208,7 +210,7 @@ export default function PaymentPage() {
             onClick={confirmPayment}
             className={`px-6 py-3 rounded-xl font-medium transition inline-flex items-center gap-2 ${
               method && !processing
-                ? "bg-[#FF6500] text-white hover:bg-[#FFA559]"
+                ? "bg-gradient-to-r from-[#FF7A00] to-[#FF3D00] text-white"
                 : "bg-gray-200 text-gray-400 cursor-not-allowed"
             }`}>
             {processing ? (
@@ -225,20 +227,22 @@ export default function PaymentPage() {
       {/* QR Code Popup */}
       {showQrPopup && generatedQrCodeUrl && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-3xl shadow-xl p-6 w-80 text-center">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 w-80 text-center">
             <h3 className="text-xl font-bold mb-4 text-[#FF6500]">
               สแกนเพื่อชำระเงิน
             </h3>
             <p className="text-gray-600 mb-2">
               Order ID: {order.id} | ยอดเงิน: ฿{totalAmountNumber.toFixed(2)}
             </p>
-            <img
-              src={generatedQrCodeUrl}
-              alt="PromptPay QR"
-              className="mx-auto mb-4 w-48 h-48 object-cover"
-            />
+            <div className="mx-auto mb-4 w-56 h-56 p-2 bg-gray-50 rounded-lg flex items-center justify-center">
+              <img
+                src={generatedQrCodeUrl}
+                alt="PromptPay QR"
+                className="w-full h-full object-contain"
+              />
+            </div>
             <button
-              className="px-6 py-2 bg-[#FF6500] text-white rounded-xl hover:bg-[#FFA559] transition"
+              className="px-6 py-2 bg-gradient-to-r from-[#FF7A00] to-[#FF3D00] text-white rounded-xl hover:opacity-95 transition"
               onClick={() => setShowQrPopup(false)}>
               ปิด
             </button>

@@ -163,12 +163,14 @@ export default function EmployeesPage() {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen space-y-6">
+    <div className="p-6 max-w-7xl mx-auto bg-gray-50 min-h-screen space-y-6">
       {/* Header + Logout */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-[#FF6500]">
-            จัดการข้อมูลพนักงาน
+          <h1 className="text-3xl font-bold">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF7A00] to-[#FF3D00]">
+              จัดการข้อมูลพนักงาน
+            </span>
           </h1>
           <p className="text-sm text-gray-500 mt-1">
             เพิ่ม แก้ไข หรือลบข้อมูลพนักงานของร้านคุณ

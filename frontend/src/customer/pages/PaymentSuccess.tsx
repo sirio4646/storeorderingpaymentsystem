@@ -37,8 +37,8 @@ const PaymentSuccess: React.FC = () => {
         <Button
           variant="contained"
           sx={{
-            backgroundColor: "#4caf50",
-            "&:hover": { backgroundColor: "#43a047" },
+            background: "linear-gradient(90deg,#FF7A00,#FF3D00)",
+            "&:hover": { background: "linear-gradient(90deg,#FF6A00,#FF2D00)" },
             px: 4,
             py: 1.5,
             fontWeight: "bold",

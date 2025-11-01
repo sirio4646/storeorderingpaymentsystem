@@ -117,11 +117,15 @@ export default function DashboardPage() {
 
   return (
     <div
-      className="p-6 space-y-6 bg-gray-50 min-h-screen text-gray-800"
+      className="p-6 max-w-7xl mx-auto space-y-6 bg-gray-50 min-h-screen text-gray-800"
       style={{ fontFamily: "Carlito, sans-serif" }}>
       {/* Header + Logout */}
       <Flex justifyContent="between" alignItems="center" className="mb-4">
-        <Title className="text-2xl font-bold text-[#FF6500]">Dashboard</Title>
+        <Title className="text-2xl font-bold">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF7A00] to-[#FF3D00]">
+            Dashboard
+          </span>
+        </Title>
         <button
           onClick={handleLogout}
           disabled={loading}
