@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE } from "../../utils/apiBase";
 import { useAuthStore } from "../../store/authStore";
+import Spinner from "../../components/Spinner";
 
 interface Order {
   id: number;
@@ -23,6 +24,7 @@ export default function PaymentPage() {
     null
   );
   const [showQrPopup, setShowQrPopup] = useState(false);
+  const [processing, setProcessing] = useState(false);
 
   // ดึงข้อมูล order
   const fetchOrder = async () => {
@@ -65,6 +67,7 @@ export default function PaymentPage() {
       )}.png`;
       setGeneratedQrCodeUrl(url);
       setShowQrPopup(true);
+      setProcessing(true);
 
       // Polling ตรวจสอบ payment_status ทุก 3 วินาที
       const interval = setInterval(async () => {
@@ -78,7 +81,7 @@ export default function PaymentPage() {
             navigate("/payment-success");
           }
         } catch (err) {
-          console.error("Polling error:", err);
+          setProcessing(false);
         }
       }, 5000);
     }
@@ -201,14 +204,20 @@ export default function PaymentPage() {
             ยกเลิก
           </button>
           <button
-            disabled={!method}
+            disabled={!method || processing}
             onClick={confirmPayment}
-            className={`px-6 py-3 rounded-xl font-medium transition ${
-              method
+            className={`px-6 py-3 rounded-xl font-medium transition inline-flex items-center gap-2 ${
+              method && !processing
                 ? "bg-[#FF6500] text-white hover:bg-[#FFA559]"
                 : "bg-gray-200 text-gray-400 cursor-not-allowed"
             }`}>
-            ชำระเงิน
+            {processing ? (
+              <>
+                <Spinner size={16} /> กำลังรอการชำระเงิน...
+              </>
+            ) : (
+              "ชำระเงิน"
+            )}
           </button>
         </div>
       </div>

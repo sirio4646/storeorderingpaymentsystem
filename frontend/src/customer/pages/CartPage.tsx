@@ -1,7 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
 import { API_BASE } from "../../utils/apiBase";
 import { useAuthStore } from "../../store/authStore";
+import Spinner from "../../components/Spinner";
 import type { CartItem } from "./OrderFoodPage";
 
 interface Props {
@@ -13,6 +15,7 @@ export default function CartPage({ cart, setCart }: Props) {
   const navigate = useNavigate();
   const { table_number } = useParams<{ table_number: string }>();
   const parsedTableNumber = Number(table_number);
+  const [checkingOut, setCheckingOut] = useState(false);
 
   const updateItem = (menu_id: number, quantity: number, notes: string) => {
     setCart(
@@ -44,6 +47,7 @@ export default function CartPage({ cart, setCart }: Props) {
     }
 
     try {
+      setCheckingOut(true);
       const orderData = {
         table_number: parsedTableNumber,
         total_amount: Number(totalAmount.toFixed(2)),
@@ -72,6 +76,8 @@ export default function CartPage({ cart, setCart }: Props) {
     } catch (err: any) {
       console.error("Checkout error:", err.response?.data || err);
       alert("สร้างออเดอร์ไม่สำเร็จ กรุณาลองอีกครั้ง");
+    } finally {
+      setCheckingOut(false);
     }
   };
 
@@ -195,8 +201,17 @@ export default function CartPage({ cart, setCart }: Props) {
         </span>
         <button
           onClick={handleCheckout}
-          className="w-full sm:w-auto px-6 py-3 bg-[#FF6500] text-white font-semibold rounded-lg shadow-lg hover:bg-[#FFA559] active:scale-95 transition-transform">
-          ชำระเงิน
+          disabled={checkingOut}
+          className={`w-full sm:w-auto px-6 py-3 bg-[#FF6500] text-white font-semibold rounded-lg shadow-lg active:scale-95 transition-transform inline-flex items-center gap-2 ${
+            checkingOut ? "opacity-80 cursor-wait" : "hover:bg-[#FFA559]"
+          }`}>
+          {checkingOut ? (
+            <>
+              <Spinner size={18} /> กำลังสร้างออเดอร์...
+            </>
+          ) : (
+            "ชำระเงิน"
+          )}
         </button>
       </div>
     </div>

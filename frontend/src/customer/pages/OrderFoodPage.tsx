@@ -109,6 +109,14 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
     addToCart(menu);
   };
 
+  // accessibility: allow keyboard Add-to-cart via Enter/Space on cards
+  const handleCardKeyDown = (e: React.KeyboardEvent, menu: MenuItem) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      addToCart(menu);
+    }
+  };
+
   const addToCart = (menuItem: MenuItem) => {
     const existingItem = cart.find((item) => item.menu_id === menuItem.id);
 
@@ -200,6 +208,10 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
             <div
               key={menu.id}
               onClick={() => handleCardClick(menu)}
+              onKeyDown={(e) => handleCardKeyDown(e, menu)}
+              tabIndex={0}
+              role="button"
+              aria-pressed={clickedMenuIds.includes(menu.id)}
               className={`w-[150px] h-[200px] bg-[#FFA559] rounded-lg shadow-md hover:shadow-lg transition-transform transform relative flex-shrink-0 flex flex-col ${
                 clickedMenuIds.includes(menu.id)
                   ? "scale-105"

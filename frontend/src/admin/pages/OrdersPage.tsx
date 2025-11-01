@@ -28,6 +28,7 @@ export default function OrdersPage() {
   const [actionToConfirm, setActionToConfirm] = useState("");
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
+  const [actionInProgress, setActionInProgress] = useState<number | null>(null);
 
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
@@ -65,6 +66,7 @@ export default function OrdersPage() {
     if (status === "completed") {
       body.payment_status = "paid";
     }
+    setActionInProgress(id);
     fetch(`${API_BASE}orders/${id}`, {
       method: "PATCH",
       headers: {
@@ -72,7 +74,10 @@ export default function OrdersPage() {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
-    }).then(() => fetchOrders());
+    })
+      .then(() => fetchOrders())
+      .catch((e) => console.error("Update order failed:", e))
+      .finally(() => setActionInProgress(null));
   };
 
   const handleActionClick = (order: Order, action: string) => {
@@ -102,13 +107,44 @@ export default function OrdersPage() {
         <h1 className="text-4xl font-extrabold text-gray-800"> Orders</h1>
         <button
           onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded inline-flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 16l4-4m0 0l-4-4m4 4H7"
+            />
+          </svg>
           Logout
         </button>
       </div>
 
       {loading ? (
-        <p className="text-center text-gray-500">Loading orders...</p>
+        <div className="text-center text-gray-500">
+          <svg className="animate-spin mx-auto h-6 w-6" viewBox="0 0 24 24">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+              fill="none"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            />
+          </svg>
+          <div>กำลังโหลดออเดอร์...</div>
+        </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {orders.map((order) => (
@@ -159,9 +195,28 @@ export default function OrdersPage() {
               <div className="flex justify-between items-center">
                 {order.status === "pending" && (
                   <button
-                    className="bg-blue-700 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors text-lg font-semibold"
-                    onClick={() => handleViewItems(order)}>
+                    className="bg-blue-700 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors text-lg font-semibold inline-flex items-center gap-2"
+                    onClick={() => handleViewItems(order)}
+                    disabled={actionInProgress !== null}>
                     ดูรายละเอียด
+                    {actionInProgress === order.id ? (
+                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                        />
+                      </svg>
+                    ) : null}
                   </button>
                 )}
               </div>

@@ -39,15 +39,42 @@ interface CategorySales {
 
 const COLORS = ["#FF6384", "#36A2EB", "#FFCE56", "#8A2BE2", "#00C49F"];
 
+// Small inline spinner
+function Spinner({ size = 18 }: { size?: number }) {
+  return (
+    <svg
+      className="animate-spin text-white"
+      style={{ width: size, height: size }}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      aria-hidden="true">
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"></circle>
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+    </svg>
+  );
+}
+
 export default function DashboardPage() {
   const [totalSales, setTotalSales] = useState<number>(0);
   const [topItems, setTopItems] = useState<TopItem[]>([]);
   const [categorySales, setCategorySales] = useState<CategorySales[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
 
   const fetchDashboard = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("jwtToken");
       if (!token) {
@@ -70,6 +97,8 @@ export default function DashboardPage() {
         // token invalid หรือ expired
         handleLogout();
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,8 +124,17 @@ export default function DashboardPage() {
         <Title className="text-2xl font-bold text-[#FF6500]">Dashboard</Title>
         <button
           onClick={handleLogout}
-          className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl shadow transition">
-          Logout
+          disabled={loading}
+          className={`mt-4 ${
+            loading ? "bg-red-400 cursor-wait" : "bg-red-600 hover:bg-red-700"
+          } text-white px-4 py-2 rounded-xl shadow transition inline-flex items-center gap-2`}>
+          {loading ? (
+            <>
+              <Spinner size={14} /> กำลังโหลด...
+            </>
+          ) : (
+            "Logout"
+          )}
         </button>
       </Flex>
 
@@ -106,7 +144,13 @@ export default function DashboardPage() {
           <div>
             <Title className="text-white">ยอดขายรวม</Title>
             <Metric className="text-4xl font-bold mt-2">
-              {totalSales.toLocaleString()} บาท
+              {loading ? (
+                <span className="inline-flex items-center gap-2">
+                  <Spinner size={20} /> กำลังโหลด...
+                </span>
+              ) : (
+                `${totalSales.toLocaleString()} บาท`
+              )}
             </Metric>
           </div>
         </Flex>
