@@ -26,9 +26,9 @@ if app.config['JWT_SECRET_KEY'] == DEFAULT_JWT_SECRET and os.getenv('JWT_SECRET_
     print("Warning: JWT_SECRET_KEY is using the default value. Please set it in .env.")
 # -------------------------------------------------------------
 
-# Configure CORS (Cross-Origin Resource Sharing) for the Flask app.
-# Read allowed origins from CORS_ORIGINS env var (comma-separated). Default to local dev and the known Vercel domain.
-default_origins = "https://storeorderingpaymentsystem.vercel.app"
+# Read allowed origins from CORS_ORIGINS env var (comma-separated). 
+# Default includes the Production URL of Vercel and the new Railway Backend URL (เผื่อกรณีเรียกตัวเอง)
+default_origins = "https://storeorderingpaymentsystem.vercel.app,https://storeorderingpaymentsystem-production.up.railway.app"
 allowed_origins = os.getenv("CORS_ORIGINS", default_origins).split(",")
 CORS(app, resources={r"/api/*": {"origins": allowed_origins}}, supports_credentials=True)
 
