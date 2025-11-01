@@ -53,7 +53,25 @@ export default function OrdersPage() {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        const contentType = res.headers.get("content-type") || "";
+        if (!res.ok) {
+          // try to get text for debugging
+          const text = await res.text().catch(() => "");
+          console.error(
+            `Orders fetch failed: ${res.status} ${res.statusText}`,
+            text
+          );
+          throw new Error(`Orders fetch failed: ${res.status}`);
+        }
+        if (contentType.includes("application/json")) {
+          return res.json();
+        }
+        // Not JSON: likely HTML error page — grab text for debugging
+        const text = await res.text().catch(() => "<no body>");
+        console.error("Expected JSON but got:", text.slice(0, 400));
+        throw new Error("Expected JSON response for orders");
+      })
       .then((data) => setOrders(data))
       .catch((err) => console.error("Failed to fetch orders:", err))
       .finally(() => setLoading(false));

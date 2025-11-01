@@ -44,6 +44,14 @@ export default function DashboardPage() {
   const [topItems, setTopItems] = useState<TopItem[]>([]);
   const [categorySales, setCategorySales] = useState<CategorySales[]>([]);
 
+  const formatNumber = (v?: number | null) => {
+    try {
+      return (v ?? 0).toLocaleString();
+    } catch (e) {
+      return String(v ?? 0);
+    }
+  };
+
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
 
@@ -106,7 +114,7 @@ export default function DashboardPage() {
           <div>
             <Title className="text-white">ยอดขายรวม</Title>
             <Metric className="text-4xl font-bold mt-2">
-              {totalSales.toLocaleString()} บาท
+              {formatNumber(totalSales)} บาท
             </Metric>
           </div>
         </Flex>
@@ -146,7 +154,7 @@ export default function DashboardPage() {
                     {item.total_quantity}
                   </TableCell>
                   <TableCell className="text-center align-middle">
-                    {item.total_amount.toLocaleString()} บาท
+                    {formatNumber(item.total_amount)} บาท
                   </TableCell>
                 </TableRow>
               ))}
@@ -177,7 +185,7 @@ export default function DashboardPage() {
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value: number) => `${value.toLocaleString()} บาท`}
+                formatter={(value: any) => `${formatNumber(Number(value))} บาท`}
               />
               <Legend verticalAlign="bottom" height={36} />
             </PieChart>
