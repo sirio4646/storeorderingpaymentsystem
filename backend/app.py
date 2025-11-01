@@ -487,7 +487,16 @@ def get_order_by_id(current_user, order_id):
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
+
         restaurant_id = current_user['restaurant_id']
+
+        # ✅ ดึง phone_number (promptpay) จากฐานข้อมูล
+        cursor.execute("SELECT phone_number FROM restaurants WHERE id = %s", (restaurant_id,))
+        restaurant = cursor.fetchone()
+        if not restaurant:
+            return jsonify({"error": "Restaurant not found"}), 404
+
+        promptpay_number = restaurant['phone_number']  # ✅ ใช้ตัวนี้แทน hardcode
 
         sql_order = """
             SELECT id, restaurant_id, table_number, total_amount, status, payment_status, order_time, updated_at, qr_code_url
@@ -528,6 +537,7 @@ def get_order_by_id(current_user, order_id):
         if order.get('updated_at'):
             order['updated_at'] = order['updated_at'].isoformat()
 
+        order['promptpay_number'] = promptpay_number  # ✅ เพิ่มข้อมูลลงใน response
         return jsonify(order), 200
     except Exception as e:
         print(f"Error in /api/orders/{order_id} (GET): {e}")
@@ -537,7 +547,7 @@ def get_order_by_id(current_user, order_id):
             cursor.close()
         if conn:
             conn.close()
-
+            
 # --- API Endpoint: Create a New Order ---
 @app.route('/api/orders', methods=['POST'])
 @token_required
@@ -1056,6 +1066,63 @@ def update_table_status(table_id):
     cursor.close()
     conn.close()
     return jsonify({'success': True})
+
+# --- API Endpoint: Get Restaurant Info ---
+@app.route('/api/restaurants/info', methods=['GET'])
+@token_required
+def get_restaurant_info(current_user):
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        restaurant_id = current_user['restaurant_id']
+
+        cursor.execute(
+            "SELECT name, phone_number FROM restaurants WHERE id = %s",
+            (restaurant_id,)
+        )
+        restaurant = cursor.fetchone()
+        if not restaurant:
+            return jsonify({"error": "Restaurant not found"}), 404
+
+        return jsonify(restaurant), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to fetch restaurant info", "detail": str(e)}), 500
+    finally:
+        if cursor: cursor.close()
+        if conn: conn.close()
+
+# --- Update Restaurant Phone Number ---
+@app.route("/api/restaurants/phone", methods=["PUT"])
+@token_required
+def update_restaurant_phone(current_user):
+    data = request.get_json()
+    if not data or "phone_number" not in data:
+        return jsonify({"error": "Missing phone_number"}), 400
+
+    new_phone = data["phone_number"]
+    restaurant_id = current_user["restaurant_id"]
+
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        sql = "UPDATE restaurants SET phone_number=%s, updated_at=NOW() WHERE id=%s"
+        cursor.execute(sql, (new_phone, restaurant_id))
+        conn.commit()
+
+        return jsonify({"message": "Phone number updated successfully"}), 200
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        return jsonify({"error": "Failed to update phone number", "detail": str(e)}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 if __name__ == '__main__':
     # Running the app in debug mode makes it restart automatically on code changes

@@ -24,10 +24,13 @@ export default function LoginPage() {
 
     try {
       // --- ส่ง username/password ดิบไป backend
-      const response = await axios.post(`${API_BASE}auth/login`, {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        `https://storeorderingpaymentsystem-production.up.railway.app/api/auth/login`,
+        {
+          username,
+          password,
+        }
+      );
 
       if (response.status === 200) {
         const { token, restaurant_id, is_customer } = response.data;
@@ -60,7 +63,7 @@ export default function LoginPage() {
       className="flex items-center justify-center min-h-screen bg-cover bg-center font-sans text-gray-800"
       style={{
         backgroundImage:
-          "url('https://png.pngtree.com/thumb_back/fh260/background/20241124/pngtree-delicious-indian-food-on-wooden-table-with-copy-space-image_16626855.jpg')",
+          "url('https://images.pexels.com/photos/1640773/pexels-photo-1640773.jpeg')",
       }}>
       <div className="w-full max-w-sm bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl p-6">
         <h2 className="text-2xl font-bold mb-6 text-center text-[#FF6500]">
