@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const api = "https://storeorderingpaymentsystem-8p5l.vercel.app/api/";
+import { API_BASE } from "../../utils/apiBase";
 
 export interface UserProfileToken {
   token: string;
@@ -13,10 +12,13 @@ export const loginApi = async (
   password: string
 ): Promise<UserProfileToken | null> => {
   try {
-    const response = await axios.post<UserProfileToken>(api + "account/login", {
-      username,
-      password,
-    });
+    const response = await axios.post<UserProfileToken>(
+      `${API_BASE}auth/login`,
+      {
+        username,
+        password,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Login failed:", error);

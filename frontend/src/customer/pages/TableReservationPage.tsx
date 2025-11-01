@@ -1,4 +1,5 @@
 import { formatDateTime } from "../../utils/formatDateTime";
+import { API_BASE } from "../../utils/apiBase";
 import TableCard from "../../components/TableCard";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -36,7 +37,7 @@ export default function TableReservationPage({ userType = "ลูกค้า" }
 
   const fetchTables = async () => {
     try {
-      const res = await fetch("https://storeorderingpaymentsystem-production.up.railway.app/api/tables", {
+      const res = await fetch(`${API_BASE}tables`, {
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();

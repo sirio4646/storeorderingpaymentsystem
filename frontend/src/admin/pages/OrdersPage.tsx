@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { API_BASE } from "../../utils/apiBase";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 
@@ -46,7 +47,7 @@ export default function OrdersPage() {
 
   const fetchOrders = () => {
     setLoading(true);
-    fetch("https://storeorderingpaymentsystem-production.up.railway.app/api/orders", {
+    fetch(`${API_BASE}orders`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -64,7 +65,7 @@ export default function OrdersPage() {
     if (status === "completed") {
       body.payment_status = "paid";
     }
-    fetch(`https://storeorderingpaymentsystem-production.up.railway.app/api/orders/${id}`, {
+    fetch(`${API_BASE}orders/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

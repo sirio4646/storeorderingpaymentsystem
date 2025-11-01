@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../../utils/apiBase";
 import { useAuthStore } from "../../store/authStore";
 
 interface Employee {
@@ -33,7 +34,7 @@ export default function EmployeesPage() {
 
   // --- Fetch employees ---
   const fetchEmployees = () => {
-    fetch("https://storeorderingpaymentsystem-production.up.railway.app/api/employees", {
+    fetch(`${API_BASE}employees`, {
       headers: { Authorization: `Bearer ${jwtToken}` },
     })
       .then((res) => res.json())
@@ -60,7 +61,7 @@ export default function EmployeesPage() {
     setValidationMessage(null);
     const currentISODate = new Date().toISOString().split("T")[0];
 
-    fetch("https://storeorderingpaymentsystem-production.up.railway.app/api/employees", {
+    fetch(`${API_BASE}employees`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +87,7 @@ export default function EmployeesPage() {
   };
 
   const saveEditedEmployee = () => {
-    fetch(`https://storeorderingpaymentsystem-production.up.railway.app/api/employees/${editingId}`, {
+    fetch(`${API_BASE}employees/${editingId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +103,7 @@ export default function EmployeesPage() {
 
   // --- Delete Employee ---
   const deleteEmployee = (id: number) => {
-    fetch(`https://storeorderingpaymentsystem-production.up.railway.app/api/employees/${id}`, {
+    fetch(`${API_BASE}employees/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${jwtToken}` },
     }).then(() => fetchEmployees());
@@ -153,7 +154,9 @@ export default function EmployeesPage() {
       {/* Form */}
       <div className="bg-white shadow-md rounded-2xl p-6">
         {validationMessage && (
-          <div className="mb-3 text-red-600 font-medium">{validationMessage}</div>
+          <div className="mb-3 text-red-600 font-medium">
+            {validationMessage}
+          </div>
         )}
         <div className="flex flex-wrap gap-3">
           <input

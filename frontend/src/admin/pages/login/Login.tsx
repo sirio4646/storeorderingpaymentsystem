@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE } from "../../../utils/apiBase";
 import { useAuthStore } from "../../../store/authStore";
 
 export default function LoginPage() {
@@ -23,13 +24,10 @@ export default function LoginPage() {
 
     try {
       // --- ส่ง username/password ดิบไป backend
-      const response = await axios.post(
-        "https://storeorderingpaymentsystem-production.up.railway.app/api/auth/login",
-        {
-          username,
-          password,
-        }
-      );
+      const response = await axios.post(`${API_BASE}auth/login`, {
+        username,
+        password,
+      });
 
       if (response.status === 200) {
         const { token, restaurant_id, is_customer } = response.data;

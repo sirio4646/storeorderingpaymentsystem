@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../../utils/apiBase";
 import { useAuthStore } from "../../store/authStore";
 
 interface Table {
@@ -26,15 +27,12 @@ export default function AdminTableManagePage() {
     setLoading(true);
     try {
       const token = localStorage.getItem("jwtToken");
-      const res = await fetch(
-        "https://storeorderingpaymentsystem-production.up.railway.app/api/tables",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await fetch(`${API_BASE}tables`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       const data = await res.json();
       setTables(data);
     } catch (err) {
@@ -49,7 +47,7 @@ export default function AdminTableManagePage() {
     const newStatus = table.status === "free" ? "occupied" : "free";
     try {
       const token = localStorage.getItem("jwtToken");
-      await fetch(`https://storeorderingpaymentsystem-production.up.railway.app/api/tables/${table.id}`, {
+      await fetch(`${API_BASE}tables/${table.id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

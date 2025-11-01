@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE } from "../../utils/apiBase";
 
 interface MenuItem {
   id: number;
@@ -27,7 +28,14 @@ interface Props {
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
-const categories = ["ทั้งหมด", "อาหารจานเดียว", "เส้น", "ซุป", "เครื่องดื่ม", "ของหวาน"];
+const categories = [
+  "ทั้งหมด",
+  "อาหารจานเดียว",
+  "เส้น",
+  "ซุป",
+  "เครื่องดื่ม",
+  "ของหวาน",
+];
 
 export default function OrderFoodPage({ cart, setCart }: Props) {
   const { table_number } = useParams<{ table_number: string }>();
@@ -50,7 +58,7 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
   const fetchMenus = async () => {
     try {
       const token = localStorage.getItem("jwtToken");
-      const response = await axios.get("https://storeorderingpaymentsystem-production.up.railway.app/api/menus", {
+      const response = await axios.get(`${API_BASE}menus`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const menuData: MenuItem[] = response.data;
@@ -71,7 +79,9 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
     if (selectedCategory === "ทั้งหมด") {
       setFilteredMenus(menus);
     } else {
-      setFilteredMenus(menus.filter((menu) => menu.category === selectedCategory));
+      setFilteredMenus(
+        menus.filter((menu) => menu.category === selectedCategory)
+      );
     }
   }, [selectedCategory, menus]);
 
@@ -135,101 +145,98 @@ export default function OrderFoodPage({ cart, setCart }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col max-w-screen-lg mx-auto text-gray-900">
+      {/* แถวบน สำหรับปุ่มย้อนกลับ + ปุ่ม Cart */}
+      <div className="flex justify-between items-start mb-4">
+        {/* ปุ่มย้อนกลับ */}
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 px-4 py-2 bg-[#FFB566] text-gray-100 font-semibold rounded-lg hover:bg-[#FFA559] transition">
+          ← กลับ
+        </button>
 
-  {/* แถวบน สำหรับปุ่มย้อนกลับ + ปุ่ม Cart */}
-  <div className="flex justify-between items-start mb-4">
-    {/* ปุ่มย้อนกลับ */}
-    <button
-      onClick={() => navigate(-1)}
-      className="flex items-center gap-2 px-4 py-2 bg-[#FFB566] text-gray-100 font-semibold rounded-lg hover:bg-[#FFA559] transition"
-    >
-      ← กลับ
-    </button>
-
-    {/* ปุ่ม Cart */}
-    <button
-      onClick={() => navigate(`/cart/${table_number}`)}
-      className="flex items-center gap-2 bg-[#FF6500] text-gray-100 font-semibold px-4 py-2 rounded-full shadow-lg hover:bg-[#FFA559] transition"
-    >
-      <span>Cart</span>
-      {cart.length > 0 && (
-        <span className="bg-[#1E3E62] text-[#FF6500] px-2 py-1 rounded-full text-sm font-bold">
-          {cart.length}
-        </span>
-      )}
-    </button>
-  </div>
-
-  <h1 className="text-3xl font-bold text-center mb-6 text-[#FF6500]">
-    สั่งอาหารสำหรับโต๊ะ #{table_number}
-  </h1>
-
-  {/* ปุ่มหมวดหมู่ */}
-  <div className="flex justify-center gap-3 mb-8 overflow-x-auto pb-2 max-w-full">
-    {categories.map((cat) => (
-      <button
-        key={cat}
-        className={`whitespace-nowrap px-5 py-2 rounded-full border ${selectedCategory === cat
-          ? "bg-[#FF6500] text-gray-900 font-bold border-[#FF6500]"
-          : "bg-[#1E3E62] text-gray-100 font-bold border-[#1E3E62]"
-          } hover:bg-[#FFA559] hover:border-[#FFA559] hover:text-gray-900 transition`}
-        onClick={() => setSelectedCategory(cat)}
-      >
-        {cat}
-      </button>
-    ))}
-  </div>
-
-  {/* แนวนอนลากได้ */}
-  <div
-    ref={scrollRef}
-    onMouseDown={handleMouseDown}
-    onMouseLeave={handleMouseLeave}
-    onMouseUp={handleMouseUp}
-    onMouseMove={handleMouseMove}
-    className="relative overflow-x-auto cursor-grab active:cursor-grabbing select-none pb-4 touch-pan-x"
-  >
-    <div className="grid grid-flow-col auto-cols-[150px] grid-rows-2 gap-4">
-      {filteredMenus.map((menu) => (
-        <div
-          key={menu.id}
-          onClick={() => handleCardClick(menu)}
-          className={`w-[150px] h-[200px] bg-[#FFA559] rounded-lg shadow-md hover:shadow-lg transition-transform transform relative flex-shrink-0 flex flex-col ${clickedMenuIds.includes(menu.id) ? "scale-105" : "hover:scale-105"}`}
-        >
-          <img
-            src={menu.image_url || "https://via.placeholder.com/400x300"}
-            alt={menu.name}
-            className="w-full h-25 object-cover rounded-t-lg"
-            draggable={false}
-          />
-          <div className="p-2 flex-1 flex flex-col">
-            <div>
-              <h3 className="text-sm font-bold text-[#000000] line-clamp-1">{menu.name}</h3>
-              <p className="text-[#000000] text-xs font-medium line-clamp-2">{menu.description}</p>
-            </div>
-            
-            <div className="mt-auto flex justify-end">
-              <span className="text-sm font-extrabold text-[#26355D]">
-                ฿{parseFloat(menu.base_price).toFixed(2)}
-              </span>
-            </div>
-          </div>
-          
-          {clickedMenuIds.includes(menu.id) && (
-            <div className="absolute top-1 right-1 bg-[#FF6500] text-gray-900 px-1 py-0.5 rounded animate-pulse text-xs">
-              เพิ่มแล้ว!
-            </div>
+        {/* ปุ่ม Cart */}
+        <button
+          onClick={() => navigate(`/cart/${table_number}`)}
+          className="flex items-center gap-2 bg-[#FF6500] text-gray-100 font-semibold px-4 py-2 rounded-full shadow-lg hover:bg-[#FFA559] transition">
+          <span>Cart</span>
+          {cart.length > 0 && (
+            <span className="bg-[#1E3E62] text-[#FF6500] px-2 py-1 rounded-full text-sm font-bold">
+              {cart.length}
+            </span>
           )}
+        </button>
+      </div>
+
+      <h1 className="text-3xl font-bold text-center mb-6 text-[#FF6500]">
+        สั่งอาหารสำหรับโต๊ะ #{table_number}
+      </h1>
+
+      {/* ปุ่มหมวดหมู่ */}
+      <div className="flex justify-center gap-3 mb-8 overflow-x-auto pb-2 max-w-full">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            className={`whitespace-nowrap px-5 py-2 rounded-full border ${
+              selectedCategory === cat
+                ? "bg-[#FF6500] text-gray-900 font-bold border-[#FF6500]"
+                : "bg-[#1E3E62] text-gray-100 font-bold border-[#1E3E62]"
+            } hover:bg-[#FFA559] hover:border-[#FFA559] hover:text-gray-900 transition`}
+            onClick={() => setSelectedCategory(cat)}>
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* แนวนอนลากได้ */}
+      <div
+        ref={scrollRef}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        className="relative overflow-x-auto cursor-grab active:cursor-grabbing select-none pb-4 touch-pan-x">
+        <div className="grid grid-flow-col auto-cols-[150px] grid-rows-2 gap-4">
+          {filteredMenus.map((menu) => (
+            <div
+              key={menu.id}
+              onClick={() => handleCardClick(menu)}
+              className={`w-[150px] h-[200px] bg-[#FFA559] rounded-lg shadow-md hover:shadow-lg transition-transform transform relative flex-shrink-0 flex flex-col ${
+                clickedMenuIds.includes(menu.id)
+                  ? "scale-105"
+                  : "hover:scale-105"
+              }`}>
+              <img
+                src={menu.image_url || "https://via.placeholder.com/400x300"}
+                alt={menu.name}
+                className="w-full h-25 object-cover rounded-t-lg"
+                draggable={false}
+              />
+              <div className="p-2 flex-1 flex flex-col">
+                <div>
+                  <h3 className="text-sm font-bold text-[#000000] line-clamp-1">
+                    {menu.name}
+                  </h3>
+                  <p className="text-[#000000] text-xs font-medium line-clamp-2">
+                    {menu.description}
+                  </p>
+                </div>
+
+                <div className="mt-auto flex justify-end">
+                  <span className="text-sm font-extrabold text-[#26355D]">
+                    ฿{parseFloat(menu.base_price).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              {clickedMenuIds.includes(menu.id) && (
+                <div className="absolute top-1 right-1 bg-[#FF6500] text-gray-900 px-1 py-0.5 rounded animate-pulse text-xs">
+                  เพิ่มแล้ว!
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
-
-  </div>
-</div>
-
-
-
-
-
   );
 }

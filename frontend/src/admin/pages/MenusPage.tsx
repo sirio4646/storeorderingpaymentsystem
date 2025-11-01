@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../../utils/apiBase";
 import { useAuthStore } from "../../store/authStore";
 
 interface Menu {
@@ -34,7 +35,7 @@ export default function MenusPage() {
 
   const fetchMenus = () => {
     console.log("Fetching menus...");
-    fetch("https://storeorderingpaymentsystem-production.up.railway.app/api/menus", {
+    fetch(`${API_BASE}menus`, {
       headers: getAuthHeaders(),
     })
       .then((res) => {
@@ -76,7 +77,7 @@ export default function MenusPage() {
       base_price: parseFloat(newMenu.base_price as string),
     };
 
-    fetch("https://storeorderingpaymentsystem-production.up.railway.app/api/menus", {
+    fetch(`${API_BASE}menus`, {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify(menuToCreate),
@@ -98,7 +99,7 @@ export default function MenusPage() {
   };
 
   const saveEditedMenu = () => {
-    fetch(`https://storeorderingpaymentsystem-production.up.railway.app/api/menus/${editingId}`, {
+    fetch(`${API_BASE}menus/${editingId}`, {
       method: "PATCH",
       headers: getAuthHeaders(),
       body: JSON.stringify(editedMenu),
@@ -115,7 +116,7 @@ export default function MenusPage() {
   };
 
   const deleteMenu = (id: number) => {
-    fetch(`https://storeorderingpaymentsystem-production.up.railway.app/api/menus/${id}`, {
+    fetch(`${API_BASE}menus/${id}`, {
       method: "DELETE",
       headers: getAuthHeaders(),
     }).then(() => {

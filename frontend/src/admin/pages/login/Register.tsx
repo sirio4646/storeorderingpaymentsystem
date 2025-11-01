@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../../../utils/apiBase";
 
 export default function RegisterForm() {
   const [username, setUsername] = useState("");
@@ -11,14 +12,11 @@ export default function RegisterForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch(
-      "https://storeorderingpaymentsystem-production.up.railway.app/api/auth/register",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, email }),
-      }
-    );
+    const res = await fetch(`${API_BASE}auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, email }),
+    });
 
     const data = await res.json();
     if (res.ok) {

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE } from "../../utils/apiBase";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import {
@@ -55,7 +56,7 @@ export default function DashboardPage() {
         return;
       }
 
-      const res = await axios.get(`https://storeorderingpaymentsystem-production.up.railway.app/api/admin/dashboard`, {
+      const res = await axios.get(`${API_BASE}admin/dashboard`, {
         headers: {
           Authorization: `Bearer ${token}`, // ✅ ส่ง token ให้ backend
         },

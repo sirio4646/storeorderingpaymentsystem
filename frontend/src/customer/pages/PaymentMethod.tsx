@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE } from "../../utils/apiBase";
 import { useAuthStore } from "../../store/authStore";
 
 interface Order {
@@ -32,12 +33,9 @@ export default function PaymentPage() {
     }
 
     try {
-      const response = await axios.get(
-        `https://storeorderingpaymentsystem-production.up.railway.app/api/orders/${order_id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get(`${API_BASE}orders/${order_id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setOrder(response.data);
     } catch (err) {
       console.error(err);
@@ -71,10 +69,9 @@ export default function PaymentPage() {
       // Polling ตรวจสอบ payment_status ทุก 3 วินาที
       const interval = setInterval(async () => {
         try {
-          const res = await axios.get(
-            `https://storeorderingpaymentsystem-production.up.railway.app/api/orders/${order.id}`,
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
+          const res = await axios.get(`${API_BASE}orders/${order.id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           if (res.data.payment_status === "paid") {
             clearInterval(interval);
             setShowQrPopup(false);
