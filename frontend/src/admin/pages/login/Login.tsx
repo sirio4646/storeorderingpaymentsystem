@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE } from "../../../utils/apiBase";
 import { useAuthStore } from "../../../store/authStore";
 
 export default function LoginPage() {
@@ -23,13 +24,10 @@ export default function LoginPage() {
 
     try {
       // --- ส่ง username/password ดิบไป backend
-      const response = await axios.post(
-        `https://storeorderingpaymentsystem-production.up.railway.app/api/auth/login`,
-        {
-          username,
-          password,
-        }
-      );
+      const response = await axios.post(`${API_BASE}auth/login`, {
+        username,
+        password,
+      });
 
       if (response.status === 200) {
         const { token, restaurant_id, is_customer } = response.data;
@@ -62,7 +60,7 @@ export default function LoginPage() {
       className="flex items-center justify-center min-h-screen bg-cover bg-center font-sans text-gray-800"
       style={{
         backgroundImage:
-          "url('https://images.pexels.com/photos/1640773/pexels-photo-1640773.jpeg')",
+          "url('https://thumbs.dreamstime.com/b/thai-food-background-dishes-cuisine-tom-yum-soup-pad-noodles-fried-rice-pork-vegetables-khao-phat-mu-85688529.jpg')",
       }}>
       <div className="w-full max-w-sm bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl p-6">
         <h2 className="text-2xl font-bold mb-6 text-center text-[#FF6500]">

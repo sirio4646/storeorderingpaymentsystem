@@ -20,7 +20,7 @@ export function useTableController(total: number = 20) {
   );
 
   // toggle สถานะโต๊ะ
-  const toggleTable = (id: number) => {
+  const toggleTable = (id: number, p0: boolean) => {
     setTables((prev) =>
       prev.map((t) =>
         t.id === id && t.status === "free"
