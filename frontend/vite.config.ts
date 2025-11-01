@@ -11,6 +11,6 @@ export default defineConfig({
   build: {
     // place Vite output inside the frontend folder so Vercel's config can find it
     // avoid writing outside the project root; use 'dist' to produce `frontend/dist`
-    outDir: 'dist'
+    outDir: '../dist'
   }
 })
