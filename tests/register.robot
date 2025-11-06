@@ -7,7 +7,7 @@ Suite Setup    Create Directory    ${CURDIR}${/}results
 Suite Teardown    Close All Browsers
 
 *** Variables ***
-${URL}    http://localhost:5173/register
+${URL}    https://storeorderingpaymentsystem.vercel.app/register
 ${BROWSER}    Edge
 
 *** Test Cases ***
